@@ -1,6 +1,6 @@
-# Insforge Database
+# Yarah Database
 
-Custom PostgreSQL Docker image with pre-installed extensions for the Insforge platform.
+Custom PostgreSQL Docker image with pre-installed extensions for the Yarah platform.
 
 ## Features
 
@@ -12,7 +12,7 @@ This image is based on **PostgreSQL 15.13** and includes the following extension
 - **[PostGIS 3](https://postgis.net/)** - Spatial and geographic objects support
 - **[pg_cron](https://github.com/citusdata/pg_cron)** - Job scheduling within PostgreSQL
 - **[pgsql-http](https://github.com/pramsey/pgsql-http)** - HTTP client for making requests from SQL
-- **insforge_pg_utils** - InsForge preload hook for scoped managed-table RLS policy administration (loaded via `shared_preload_libraries`, not `CREATE EXTENSION`)
+- **yarah_pg_utils** - Yarah preload hook for scoped managed-table RLS policy administration (loaded via `shared_preload_libraries`, not `CREATE EXTENSION`)
 
 ## Quick Start
 
@@ -21,7 +21,7 @@ This image is based on **PostgreSQL 15.13** and includes the following extension
 ```bash
 docker pull ghcr.io/<owner>/postgres:latest
 docker run -d \
-  --name insforge-db \
+  --name yarah-db \
   -e POSTGRES_PASSWORD=your_password \
   -p 5432:5432 \
   ghcr.io/<owner>/postgres:latest
@@ -42,18 +42,18 @@ CREATE EXTENSION IF NOT EXISTS http;
 
 ```bash
 # Clone the repository
-git clone https://github.com/<owner>/insforge-db.git
-cd insforge-db
+git clone https://github.com/<owner>/yarah-db.git
+cd yarah-db
 
 # Build the image
-docker build -t insforge-postgres:local ./postgres
+docker build -t yarah-postgres:local ./postgres
 
 # Run locally
 docker run -d \
-  --name insforge-db \
+  --name yarah-db \
   -e POSTGRES_PASSWORD=testpass \
   -p 5432:5432 \
-  insforge-postgres:local
+  yarah-postgres:local
 ```
 
 ## Supported Architectures

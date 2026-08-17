@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This repository builds a custom PostgreSQL 15.13 Docker image with pre-installed extensions for the Insforge platform. The image is published to GitHub Container Registry (ghcr.io) and supports both AMD64 and ARM64 architectures.
+This repository builds a custom PostgreSQL 15.13 Docker image with pre-installed extensions for the Yarah platform. The image is published to GitHub Container Registry (ghcr.io) and supports both AMD64 and ARM64 architectures.
 
 ## Installed Extensions
 
@@ -16,7 +16,7 @@ The custom Postgres image includes:
 - **PostGIS 3** - Spatial database support
 - **pg_cron** - Job scheduling within PostgreSQL
 - **pgsql-http** - HTTP client for making requests from SQL
-- **insforge_pg_utils** - InsForge preload hook for scoped managed-table RLS policy administration and project-admin extension management
+- **yarah_pg_utils** - Yarah preload hook for scoped managed-table RLS policy administration and project-admin extension management
 
 ## Build Process
 
@@ -38,10 +38,10 @@ The Dockerfile uses a two-stage build process:
 
 ```bash
 # Build the image locally
-docker build -t insforge-postgres:local ./postgres
+docker build -t yarah-postgres:local ./postgres
 
 # Test the image
-docker run --rm -e POSTGRES_PASSWORD=testpass -p 5432:5432 insforge-postgres:local
+docker run --rm -e POSTGRES_PASSWORD=testpass -p 5432:5432 yarah-postgres:local
 ```
 
 ### GitHub Actions CI/CD

@@ -26,7 +26,7 @@ static char *policy_grant_role = NULL;
 static char *policy_grant_tables = NULL;
 static char *extension_grant_role = NULL;
 
-typedef struct InsforgeUtilityCall
+typedef struct YarahUtilityCall
 {
   PlannedStmt *pstmt;
   Node *utility_stmt;
@@ -37,12 +37,12 @@ typedef struct InsforgeUtilityCall
   QueryEnvironment *queryEnv;
   DestReceiver *dest;
   QueryCompletion *qc;
-} InsforgeUtilityCall;
+} YarahUtilityCall;
 
 void _PG_init(void);
 void _PG_fini(void);
 
-static void insforge_pg_utils_ProcessUtility(PlannedStmt *pstmt,
+static void yarah_pg_utils_ProcessUtility(PlannedStmt *pstmt,
                                              const char *queryString,
                                              bool readOnlyTree,
                                              ProcessUtilityContext context,
@@ -51,10 +51,10 @@ static void insforge_pg_utils_ProcessUtility(PlannedStmt *pstmt,
                                              DestReceiver *dest,
                                              QueryCompletion *qc);
 
-static void run_next_ProcessUtility(const InsforgeUtilityCall *call);
+static void run_next_ProcessUtility(const YarahUtilityCall *call);
 
-static bool handle_policy_utility(const InsforgeUtilityCall *call);
-static bool handle_extension_utility(const InsforgeUtilityCall *call);
+static bool handle_policy_utility(const YarahUtilityCall *call);
+static bool handle_extension_utility(const YarahUtilityCall *call);
 static RangeVar *get_policy_utility_target(Node *utility_stmt);
 static RangeVar *get_drop_policy_target(DropStmt *stmt);
 static RangeVar *get_rename_policy_target(RenameStmt *stmt);
@@ -64,15 +64,15 @@ static bool is_extension_utility_statement(Node *utility_stmt);
 static bool policy_target_is_configured(const RangeVar *target_table,
                                         Oid *target_table_oid);
 static void run_as_relation_owner(Oid relid,
-                                  const InsforgeUtilityCall *call);
-static void run_as_user(Oid userid, const InsforgeUtilityCall *call);
+                                  const YarahUtilityCall *call);
+static void run_as_user(Oid userid, const YarahUtilityCall *call);
 static char *trim_token(char *token);
 
 void
 _PG_init(void)
 {
   DefineCustomStringVariable(
-      "insforge.policy_grant_role",
+      "yarah.policy_grant_role",
       "Role allowed to manage policies on configured managed tables.",
       NULL,
       &policy_grant_role,
@@ -84,8 +84,8 @@ _PG_init(void)
       NULL);
 
   DefineCustomStringVariable(
-      "insforge.policy_grant_tables",
-      "Comma-separated managed tables whose policies can be managed by insforge.policy_grant_role.",
+      "yarah.policy_grant_tables",
+      "Comma-separated managed tables whose policies can be managed by yarah.policy_grant_role.",
       NULL,
       &policy_grant_tables,
       "",
@@ -96,7 +96,7 @@ _PG_init(void)
       NULL);
 
   DefineCustomStringVariable(
-      "insforge.extension_grant_role",
+      "yarah.extension_grant_role",
       "Role allowed to manage installed PostgreSQL extensions without direct superuser privileges.",
       NULL,
       &extension_grant_role,
@@ -108,7 +108,7 @@ _PG_init(void)
       NULL);
 
   prev_ProcessUtility_hook = ProcessUtility_hook;
-  ProcessUtility_hook = insforge_pg_utils_ProcessUtility;
+  ProcessUtility_hook = yarah_pg_utils_ProcessUtility;
 }
 
 void
@@ -118,7 +118,7 @@ _PG_fini(void)
 }
 
 static void
-insforge_pg_utils_ProcessUtility(PlannedStmt *pstmt,
+yarah_pg_utils_ProcessUtility(PlannedStmt *pstmt,
                                  const char *queryString,
                                  bool readOnlyTree,
                                  ProcessUtilityContext context,
@@ -127,7 +127,7 @@ insforge_pg_utils_ProcessUtility(PlannedStmt *pstmt,
                                  DestReceiver *dest,
                                  QueryCompletion *qc)
 {
-  InsforgeUtilityCall call;
+  YarahUtilityCall call;
 
   call.pstmt = pstmt;
   call.utility_stmt = pstmt->utilityStmt;
@@ -156,7 +156,7 @@ insforge_pg_utils_ProcessUtility(PlannedStmt *pstmt,
 }
 
 static void
-run_next_ProcessUtility(const InsforgeUtilityCall *call)
+run_next_ProcessUtility(const YarahUtilityCall *call)
 {
   if (prev_ProcessUtility_hook)
   {
@@ -173,7 +173,7 @@ run_next_ProcessUtility(const InsforgeUtilityCall *call)
 }
 
 static bool
-handle_policy_utility(const InsforgeUtilityCall *call)
+handle_policy_utility(const YarahUtilityCall *call)
 {
   RangeVar *target_table = NULL;
   Oid target_table_oid = InvalidOid;
@@ -195,7 +195,7 @@ handle_policy_utility(const InsforgeUtilityCall *call)
 }
 
 static bool
-handle_extension_utility(const InsforgeUtilityCall *call)
+handle_extension_utility(const YarahUtilityCall *call)
 {
   if (!current_role_matches_configured_role(extension_grant_role) ||
       !is_extension_utility_statement(call->utility_stmt))
@@ -398,7 +398,7 @@ policy_target_is_configured(const RangeVar *target_table,
 }
 
 static void
-run_as_relation_owner(Oid relid, const InsforgeUtilityCall *call)
+run_as_relation_owner(Oid relid, const YarahUtilityCall *call)
 {
   Relation relation;
   Oid owner_id;
@@ -411,7 +411,7 @@ run_as_relation_owner(Oid relid, const InsforgeUtilityCall *call)
 }
 
 static void
-run_as_user(Oid userid, const InsforgeUtilityCall *call)
+run_as_user(Oid userid, const YarahUtilityCall *call)
 {
   Oid save_userid;
   int save_sec_context;
