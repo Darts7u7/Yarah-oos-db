@@ -1,0 +1,7 @@
+Yarah Postgres Image
+Copyright 2026 Yarah
+
+This image build is a fork of the InsForge postgres image
+(https://github.com/InsForge/insforge-db), by InsForge contributors.
+Substantial modifications have been made, including rebranding of the
+bundled yarah_pg_utils extension. Not affiliated with or endorsed by InsForge.

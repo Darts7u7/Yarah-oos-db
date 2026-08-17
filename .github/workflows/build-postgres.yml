@@ -7,7 +7,7 @@ on:
   pull_request:
     paths:
       - 'postgres/**'
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:  # allow manual trigger
     inputs:
       test_tag:
         description: 'Test tag name (e.g., v0.1.1-test)'

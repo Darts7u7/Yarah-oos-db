@@ -62,7 +62,7 @@ git push origin v1.0.0
 # Or trigger manual build via GitHub Actions UI with custom tag
 ```
 
-- **Published to**: `ghcr.io/<owner>/postgres`
+- **Published to**: `ghcr.io/darts7u7/postgres`
 - **Platforms**: linux/amd64, linux/arm64
 
 ## Important Notes

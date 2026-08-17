@@ -19,12 +19,12 @@ This image is based on **PostgreSQL 15.13** and includes the following extension
 ### Pull and run the image
 
 ```bash
-docker pull ghcr.io/<owner>/postgres:latest
+docker pull ghcr.io/darts7u7/postgres:latest
 docker run -d \
   --name yarah-db \
   -e POSTGRES_PASSWORD=your_password \
   -p 5432:5432 \
-  ghcr.io/<owner>/postgres:latest
+  ghcr.io/darts7u7/postgres:latest
 ```
 
 ### Enable extensions
@@ -70,7 +70,7 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-Published images are available at: `ghcr.io/<owner>/postgres`
+Published images are available at: `ghcr.io/darts7u7/postgres`
 
 ## License
 
